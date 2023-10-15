@@ -58,8 +58,10 @@ public class SecurityConfig {
                 .and()
 //                .httpBasic()
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/welcome")
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/welcome")
+                    .failureUrl("login?error=true")
+                    .permitAll()
                 .and().build();
     }
 
