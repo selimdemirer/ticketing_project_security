@@ -27,7 +27,7 @@ public class SecurityServiceImpl implements SecurityService {
             throw new UsernameNotFoundException(username);
         }
 
-        return new UserPrincipal(user);
+        return new UserPrincipal(user); // because UserPrincipal is implementing UserDetails to get the user from db and convert to user spring understands
 
     }
 

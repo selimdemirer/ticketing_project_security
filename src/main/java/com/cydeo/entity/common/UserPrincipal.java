@@ -18,7 +18,7 @@ public class UserPrincipal implements UserDetails { // I am doing mapping in thi
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() { // this is how spring understand the roles
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
         GrantedAuthority authority = new SimpleGrantedAuthority(this.user.getRole().getDescription());
