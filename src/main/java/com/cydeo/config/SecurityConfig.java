@@ -60,7 +60,7 @@ public class SecurityConfig {
                 .formLogin()
                     .loginPage("/login")
                     .defaultSuccessUrl("/welcome")
-                    .failureUrl("login?error=true")
+                    .failureUrl("/login?error=true")
                     .permitAll()
                 .and().build();
     }
