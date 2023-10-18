@@ -1,22 +1,22 @@
 package com.cydeo.config;
 
+import com.cydeo.service.SecurityService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfig {
+
+    private final SecurityService securityService;
+    private final AuthSuccessHandler authSuccessHandler;
+
+    public SecurityConfig(SecurityService securityService, AuthSuccessHandler authSuccessHandler) {
+        this.securityService = securityService;
+        this.authSuccessHandler = authSuccessHandler;
+    }
 
 //    @Bean
 //    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
@@ -60,9 +60,19 @@ public class SecurityConfig {
 //                .httpBasic()
                 .formLogin() // 1. I want to introduce my own validation form to spring
                     .loginPage("/login")// 2. This is the representation of my login page. Basically wherever that form.. /login controller is gonna give me that view..
-                    .defaultSuccessUrl("/welcome")// 3. Whenever login information is successfully done, basically whenever user authenticated with the correct user name and password, this is the page I am gonna land it
+                    // .defaultSuccessUrl("/welcome")// 3. Whenever login information is successfully done, basically whenever user authenticated with the correct user name and password, this is the page I am gonna land it
+                    .successHandler(authSuccessHandler)
                     .failureUrl("/login?error=true")// 4. If user put the wrong information I want to navigate to this url
                     .permitAll()// 5. This form login should be accessible by everyone I don't need put security on here, because everyone should be able to access login page
+                .and()
+                .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Can
+                    .logoutSuccessUrl("/login")
+                .and()
+                .rememberMe()
+                    .tokenValiditySeconds(120) // How long time security will remind you
+                    .key("cydeo")
+                    .userDetailsService(securityService)
                 .and()
                 .build();
     }
