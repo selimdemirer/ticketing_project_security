@@ -41,7 +41,7 @@ public class UserDTO {
     @NotNull
     private String confirmPassWord;
 
-    private boolean enabled;
+    private boolean enabled; // default value of boolean is false!
 
     @NotBlank
     @Pattern(regexp = "^\\d{10}$")
