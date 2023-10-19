@@ -57,4 +57,8 @@ public class UserPrincipal implements UserDetails { // I am doing mapping in thi
         return this.user.isEnabled();
     }
 
+    public Long getId(){
+        return this.user.getId();
+    }
+
 }

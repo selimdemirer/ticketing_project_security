@@ -43,12 +43,12 @@ public class SecurityConfig {
                 .authorizeRequests()
 //                .antMatchers("/user/**").hasRole("ADMIN") // ROLE_ prefix is automatically added.
                 .antMatchers("/user/**").hasAuthority("Admin") // 7. Certain roles should be able to see certain pages. We can use .hasRole and .hasAuthority to define roles. Whatever I put in the parenthesis needs to match roles in DB. Since I use "Admin" in roles table, I use .hasAuthority not .hasRole
-                .antMatchers("/project/**").hasRole("Manager")
-                .antMatchers("/task/employee/**").hasRole("Employee")
-                .antMatchers("/task/**").hasRole("Manager")
+                .antMatchers("/project/**").hasAuthority("Manager")
+                .antMatchers("/task/employee/**").hasAuthority("Employee")
+                .antMatchers("/task/**").hasAuthority("Manager")
 //                .antMatchers("/task/**").hasAnyRole("EMPLOYEE","ADMIN")
 //                .antMatchers("/task/**").hasAuthority("ROLE_EMPLOYEE") "**" meaning is everything includes under that end point
-                .antMatchers( // 6. These antmatchers means something related with the pages. Wh did I put here? Because everyone should be able to access "/" and "/login" page. I want everything under images, css, html should be available
+                .antMatchers( // 6. These ant matchers means something related with the pages. Why did I put here? Because everyone should be able to access "/" and "/login" page. I want everything under images, css, html should be available
                         "/",
                         "/login",
                         "/fragments/**",
