@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  #you can give any name
+  mypostgres:
+    image: postgres
+    container_name: mypostgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "7410"
+      POSTGRES_DB: "ticketing-app"
+    ports:
+      - "5435:5432"
+    restart: always
+    #ıt means: Save my data in here
+    volumes:
+      - initdb:/var/lib/postgresql/data
+    #These two microservices are talking each other with networks
+    networks:
+      - webnet
+  ticketing-app:
+    # . means root folder: "Try to find some docker file and build it for me. I don't want to wright 'docker image -t {name}"
+    build: .
+    container_name: ticketingapp
+    ports:
+      - "8080:8080"
+    networks:
+      - webnet
+    #It means first run mypostgres QL then run ticketing-app
+    depends_on:
+      - mypostgres
+networks:
+  #you can give any name
+  webnet:
+    driver: bridge
+volumes:
+  #you can give any name
+  initdb:
